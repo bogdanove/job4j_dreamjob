@@ -28,4 +28,8 @@ public class PostStore {
     public Collection<Post> findAll() {
         return posts.values();
     }
+
+    public Post add(Post post) {
+        return posts.put(post.getId(), post);
+    }
 }
