@@ -43,7 +43,6 @@ public class PostStore {
     }
 
     public Post update(Post post) {
-        post.setCreated(LocalDate.now());
         return posts.replace(post.getId(), post);
     }
 }
