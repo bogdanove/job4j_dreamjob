@@ -41,7 +41,6 @@ public class CandidateStore {
     }
 
     public Candidate update(Candidate candidate) {
-        candidate.setCreated(LocalDate.now());
         return candidates.replace(candidate.getId(), candidate);
     }
 }
