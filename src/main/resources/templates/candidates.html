@@ -58,6 +58,7 @@
                         <i class="fa fa-edit"></i>
                     </a>
                     <span th:text="${candidate.name}"></span>
+                    <img th:width="150" th:high="150" th:src="@{|/photoCandidate/${candidate.id}|}">
                 </td>
                 <td th:text="${candidate?.city?.name}"/>
                 <td th:text="${candidate.description}"/>
