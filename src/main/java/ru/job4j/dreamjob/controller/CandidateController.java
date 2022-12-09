@@ -9,15 +9,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.service.CandidateService;
+import ru.job4j.dreamjob.service.CityService;
 
 @ThreadSafe
 @Controller
 public class CandidateController {
 
     private final CandidateService candidateService;
+    private final CityService cityService;
 
-    public CandidateController(CandidateService candidateService) {
+    public CandidateController(CandidateService candidateService, CityService cityService) {
         this.candidateService = candidateService;
+        this.cityService = cityService;
     }
 
     @GetMapping("/candidates")
@@ -28,11 +31,13 @@ public class CandidateController {
 
     @GetMapping("/formAddCandidate")
     public String addCandidate(Model model) {
+        model.addAttribute("cities", cityService.getAllCities());
         return "addCandidate";
     }
 
     @PostMapping("/createCandidate")
     public String createPost(@ModelAttribute Candidate candidate) {
+        candidate.getCity().setName(cityService.findById(candidate.getCity().getId()).getName());
         candidateService.add(candidate);
         return "redirect:/candidates";
     }
@@ -40,11 +45,13 @@ public class CandidateController {
     @GetMapping("/formUpdateCandidate/{candidateId}")
     public String formUpdatePost(Model model, @PathVariable("candidateId") int id) {
         model.addAttribute("candidate", candidateService.findById(id));
+        model.addAttribute("cities", cityService.getAllCities());
         return "updateCandidate";
     }
 
     @PostMapping("/updateCandidate")
     public String updatePost(@ModelAttribute Candidate candidate) {
+        candidate.getCity().setName(cityService.findById(candidate.getCity().getId()).getName());
         candidateService.update(candidate);
         return "redirect:/candidates";
     }

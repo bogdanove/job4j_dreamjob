@@ -1,9 +1,10 @@
 package ru.job4j.dreamjob.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Candidate {
+public class Candidate implements Serializable {
 
     private int id;
 
@@ -12,6 +13,8 @@ public class Candidate {
     private String description;
 
     private LocalDate created;
+
+    private City city;
 
     public Candidate() {
     }
@@ -53,6 +56,14 @@ public class Candidate {
 
     public void setCreated(LocalDate created) {
         this.created = created;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override
