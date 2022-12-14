@@ -10,11 +10,18 @@ import ru.job4j.dreamjob.model.City;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class CandidateDbStore {
+
+    private final static String FIND_ALL = "SELECT * FROM candidate";
+    private final static String ADD = "INSERT INTO candidate(name, description, created, city_id, photo) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?)";
+    private final static String UPDATE = "UPDATE candidate set name = ?, description = ?, city_id = ?, photo = ? where id = ?";
+    private final static String FIND_BY_ID = "SELECT * FROM candidate WHERE id = ?";
+
     private final BasicDataSource pool;
 
     public CandidateDbStore(BasicDataSource pool) {
@@ -26,16 +33,15 @@ public class CandidateDbStore {
     public List<Candidate> findAll() {
         List<Candidate> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM candidate")
+             PreparedStatement ps = cn.prepareStatement(FIND_ALL)
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    posts.add(new Candidate(it.getInt("id"), it.getString("name"),
-                            it.getString("description"), it.getDate("created").toLocalDate(), new City(it.getInt("city_id")), it.getBytes("photo")));
+                    posts.add(candidateFactory(it));
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return posts;
     }
@@ -43,7 +49,7 @@ public class CandidateDbStore {
 
     public Candidate add(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("INSERT INTO candidate(name, description, created, city_id, photo) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?)",
+             PreparedStatement ps = cn.prepareStatement(ADD,
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
@@ -57,14 +63,14 @@ public class CandidateDbStore {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return candidate;
     }
 
     public void update(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("UPDATE candidate set name = ?, description = ?, city_id = ?, photo = ? where id = ?")
+             PreparedStatement ps = cn.prepareStatement(UPDATE)
         ) {
             ps.setString(1, candidate.getName());
             ps.setString(2, candidate.getDescription());
@@ -73,24 +79,33 @@ public class CandidateDbStore {
             ps.setInt(5, candidate.getId());
             ps.execute();
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
     }
 
     public Candidate findById(int id) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM candidate WHERE id = ?")
+             PreparedStatement ps = cn.prepareStatement(FIND_BY_ID)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return new Candidate(it.getInt("id"), it.getString("name"), it.getString("description"), it.getDate("created").toLocalDate(), new City(it.getInt("city_id")), it.getBytes("photo"));
+                    return candidateFactory(it);
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return null;
+    }
+
+    private Candidate candidateFactory(ResultSet it) throws SQLException {
+        return new Candidate(it.getInt("id"),
+                it.getString("name"),
+                it.getString("description"),
+                it.getDate("created").toLocalDate(),
+                new City(it.getInt("city_id")),
+                it.getBytes("photo"));
     }
 }
 
