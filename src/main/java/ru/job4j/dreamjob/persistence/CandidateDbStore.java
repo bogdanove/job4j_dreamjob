@@ -21,6 +21,7 @@ public class CandidateDbStore {
     private final static String ADD = "INSERT INTO candidate(name, description, created, city_id, photo) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?)";
     private final static String UPDATE = "UPDATE candidate set name = ?, description = ?, city_id = ?, photo = ? where id = ?";
     private final static String FIND_BY_ID = "SELECT * FROM candidate WHERE id = ?";
+    private final static String CLEAN = "delete from candidate";
 
     private final BasicDataSource pool;
 
@@ -106,6 +107,16 @@ public class CandidateDbStore {
                 it.getDate("created").toLocalDate(),
                 new City(it.getInt("city_id")),
                 it.getBytes("photo"));
+    }
+
+    public void clean() {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(CLEAN)
+        ) {
+            LOG.info("Table CANDIDATE successfully clear");
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
     }
 }
 

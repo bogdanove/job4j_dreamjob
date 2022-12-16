@@ -18,6 +18,7 @@ public class PostDBStore {
     private final static String ADD = "INSERT INTO post(name, description, created, city_id) VALUES (?, ?, CURRENT_TIMESTAMP, ?)";
     private final static String UPDATE = "UPDATE post set name = ?, description = ?, city_id = ? where id = ?";
     private final static String FIND_BY_ID = "SELECT * FROM post WHERE id = ?";
+    private final static String CLEAN = "delete from post";
 
 
     private final BasicDataSource pool;
@@ -101,5 +102,15 @@ public class PostDBStore {
                 it.getString("description"),
                 it.getDate("created").toLocalDate(),
                 new City(it.getInt("city_id")));
+    }
+
+    public void clean() {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(CLEAN)
+        ) {
+            LOG.info("Table POST successfully clear");
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
     }
 }
