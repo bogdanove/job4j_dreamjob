@@ -21,7 +21,7 @@ public class CandidateDbStore {
     private final static String ADD = "INSERT INTO candidate(name, description, created, city_id, photo) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?)";
     private final static String UPDATE = "UPDATE candidate set name = ?, description = ?, city_id = ?, photo = ? where id = ?";
     private final static String FIND_BY_ID = "SELECT * FROM candidate WHERE id = ?";
-    private final static String CLEAN = "TRUNCATE TABLE candidate RESTART IDENTITY";
+    private final static String CLEAN = "delete from candidate";
 
     private final BasicDataSource pool;
 

@@ -18,7 +18,7 @@ public class PostDBStore {
     private final static String ADD = "INSERT INTO post(name, description, created, city_id) VALUES (?, ?, CURRENT_TIMESTAMP, ?)";
     private final static String UPDATE = "UPDATE post set name = ?, description = ?, city_id = ? where id = ?";
     private final static String FIND_BY_ID = "SELECT * FROM post WHERE id = ?";
-    private final static String CLEAN = "TRUNCATE TABLE post RESTART IDENTITY";
+    private final static String CLEAN = "delete from post";
 
 
     private final BasicDataSource pool;
