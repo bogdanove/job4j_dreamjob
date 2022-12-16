@@ -27,7 +27,6 @@ public class PostDBStoreTest {
         store.clean();
     }
 
-    @Ignore
     @Test
     public void whenFindAllPosts() {
         Post post = new Post(0, "Java Job", "test", LocalDate.now(), new City(1));

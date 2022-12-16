@@ -26,7 +26,6 @@ public class CandidateDbStoreTest {
         store.clean();
     }
 
-    @Ignore
     @Test
     public void whenFindAllCandidates() {
         Candidate candidate = new Candidate(0, "Java Junior", "test", LocalDate.now(), new City(1), null);
