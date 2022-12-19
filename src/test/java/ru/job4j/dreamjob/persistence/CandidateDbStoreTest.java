@@ -1,18 +1,15 @@
 package ru.job4j.dreamjob.persistence;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import ru.job4j.dreamjob.config.JdbcConfiguration;
 import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.model.City;
-import ru.job4j.dreamjob.model.Post;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -20,7 +17,7 @@ public class CandidateDbStoreTest {
 
     CandidateDbStore store;
 
-    @Before
+    @BeforeEach
     public void clean() {
         store = new CandidateDbStore(new JdbcConfiguration().loadPool());
         store.clean();

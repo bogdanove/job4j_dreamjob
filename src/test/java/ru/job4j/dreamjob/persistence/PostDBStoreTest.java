@@ -1,15 +1,11 @@
 package ru.job4j.dreamjob.persistence;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import ru.job4j.dreamjob.config.JdbcConfiguration;
 import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +17,7 @@ public class PostDBStoreTest {
 
     PostDBStore store;
 
-    @Before
+    @BeforeEach
     public void clean() {
         store = new PostDBStore(new JdbcConfiguration().loadPool());
         store.clean();
