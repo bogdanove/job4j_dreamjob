@@ -4,8 +4,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import ru.job4j.dreamjob.config.JdbcConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 
@@ -13,14 +12,18 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
 public class PostDBStoreTest {
 
-    private final PostDBStore store = new PostDBStore(new JdbcConfiguration().loadPool());
+    @Autowired
+    private BasicDataSource basicDataSource;
+    private PostDBStore store;
 
     @BeforeEach
     public void clean() {
+        store = new PostDBStore(basicDataSource);
         store.clean();
     }
 

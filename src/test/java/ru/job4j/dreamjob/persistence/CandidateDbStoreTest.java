@@ -1,8 +1,10 @@
 package ru.job4j.dreamjob.persistence;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.job4j.dreamjob.config.JdbcConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.model.City;
 
@@ -10,14 +12,18 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
 public class CandidateDbStoreTest {
 
-    private final CandidateDbStore store = new CandidateDbStore(new JdbcConfiguration().loadPool());
+    @Autowired
+    private BasicDataSource basicDataSource;
+    private CandidateDbStore store;
 
     @BeforeEach
     public void clean() {
+        store = new CandidateDbStore(basicDataSource);
         store.clean();
     }
 
