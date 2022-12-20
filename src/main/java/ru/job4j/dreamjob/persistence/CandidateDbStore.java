@@ -113,6 +113,7 @@ public class CandidateDbStore {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(CLEAN)
         ) {
+            ps.execute();
             LOG.info("Table CANDIDATE successfully clear");
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);

@@ -10,16 +10,14 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.*;
 
 public class CandidateDbStoreTest {
 
-    CandidateDbStore store;
+    private final CandidateDbStore store = new CandidateDbStore(new JdbcConfiguration().loadPool());
 
     @BeforeEach
     public void clean() {
-        store = new CandidateDbStore(new JdbcConfiguration().loadPool());
         store.clean();
     }
 
@@ -31,7 +29,7 @@ public class CandidateDbStoreTest {
         store.add(candidate);
         store.add(candidate1);
         List<Candidate> candidatesInDb = store.findAll();
-        assertThat(candidatesInDb, is(posts));
+        assertThat(candidatesInDb).isEqualTo(posts);
     }
 
     @Test
@@ -39,7 +37,7 @@ public class CandidateDbStoreTest {
         Candidate candidate = new Candidate(2, "Java Junior", "test", LocalDate.now(), new City(1), null);
         store.add(candidate);
         Candidate candidateInDb = store.findById(candidate.getId());
-        assertThat(candidateInDb.getName(), is(candidate.getName()));
+        assertThat(candidateInDb.getName()).isEqualTo(candidate.getName());
     }
 
     @Test
@@ -49,6 +47,6 @@ public class CandidateDbStoreTest {
         candidate.setName("Java Junior candidate");
         store.update(candidate);
         Candidate candidateInDb = store.findById(candidate.getId());
-        assertThat(candidateInDb.getName(), is(candidate.getName()));
+        assertThat(candidateInDb.getName()).isEqualTo(candidate.getName());
     }
 }

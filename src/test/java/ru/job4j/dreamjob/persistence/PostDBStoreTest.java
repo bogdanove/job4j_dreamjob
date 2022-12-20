@@ -1,7 +1,10 @@
 package ru.job4j.dreamjob.persistence;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.config.JdbcConfiguration;
 import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
@@ -10,16 +13,14 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.*;
 
 public class PostDBStoreTest {
 
-    PostDBStore store;
+    private final PostDBStore store = new PostDBStore(new JdbcConfiguration().loadPool());
 
     @BeforeEach
     public void clean() {
-        store = new PostDBStore(new JdbcConfiguration().loadPool());
         store.clean();
     }
 
@@ -31,7 +32,7 @@ public class PostDBStoreTest {
         store.add(post);
         store.add(post1);
         List<Post> postsInDb = store.findAll();
-        assertThat(postsInDb, is(posts));
+        assertThat(postsInDb).isEqualTo(posts);
     }
 
     @Test
@@ -39,7 +40,7 @@ public class PostDBStoreTest {
         Post post = new Post(2, "Java Job", "test", LocalDate.now(), new City(1));
         store.add(post);
         Post postInDb = store.findById(post.getId());
-        assertThat(postInDb.getName(), is(post.getName()));
+        assertThat(postInDb.getName()).isEqualTo(post.getName());
     }
 
     @Test
@@ -49,6 +50,6 @@ public class PostDBStoreTest {
         post.setName("Java senior job");
         store.update(post);
         Post postInDb = store.findById(post.getId());
-        assertThat(postInDb.getName(), is(post.getName()));
+        assertThat(postInDb.getName()).isEqualTo(post.getName());
     }
 }
