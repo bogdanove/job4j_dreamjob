@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @ThreadSafe
 @Controller
-public class IndexControl {
+public class IndexController {
 
     @GetMapping("/index")
     public String index() {
