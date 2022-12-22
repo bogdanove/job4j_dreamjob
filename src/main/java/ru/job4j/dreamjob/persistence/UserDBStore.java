@@ -24,6 +24,7 @@ public class UserDBStore {
     private final static String UPDATE = "UPDATE users set email = ?, password = ? where id = ?";
     private final static String FIND_BY_ID = "SELECT * FROM users WHERE id = ?";
     private final static String CLEAN = "TRUNCATE TABLE users RESTART IDENTITY";
+    private final static String FIND = "SELECT * FROM users WHERE email = ? AND password = ?;";
 
 
     private final BasicDataSource pool;
@@ -116,4 +117,22 @@ public class UserDBStore {
             LOG.error(e.getMessage(), e);
         }
     }
+
+    public Optional<User> findUserByEmailAndPassword(String email, String password) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(FIND)
+        ) {
+            ps.setString(1, email);
+            ps.setString(2, password);
+            try (ResultSet it = ps.executeQuery()) {
+                if (it.next()) {
+                    return Optional.of(userFactory(it));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+        return Optional.empty();
+    }
+
 }

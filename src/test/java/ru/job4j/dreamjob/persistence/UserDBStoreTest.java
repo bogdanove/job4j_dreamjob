@@ -64,4 +64,28 @@ class UserDBStoreTest {
         Optional<User> userInDb = store.add(user1);
         assertThat(userInDb).isEmpty();
     }
+
+    @Test
+    public void whenFindUserByUsernameAndPassword() {
+        User user = new User(3, "2@mail.ru", "test");
+        store.add(user);
+        Optional<User> userInDb = store.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
+        assertThat(userInDb.get()).isEqualTo(user);
+    }
+
+    @Test
+    public void whenInputIncorrectPassword() {
+        User user = new User(3, "2@mail.ru", "test");
+        store.add(user);
+        Optional<User> userInDb = store.findUserByEmailAndPassword(user.getEmail(), "tost");
+        assertThat(userInDb.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void whenInputIncorrectEmail() {
+        User user = new User(3, "2@mail.ru", "test");
+        store.add(user);
+        Optional<User> userInDb = store.findUserByEmailAndPassword("3@mail.ru", user.getPassword());
+        assertThat(userInDb.isEmpty()).isTrue();
+    }
 }
