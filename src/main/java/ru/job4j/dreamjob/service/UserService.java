@@ -26,7 +26,7 @@ public class UserService {
         return userStore.add(user);
     }
 
-    public User findById(int id) {
+    public Optional<User> findById(int id) {
         return userStore.findById(id);
     }
 

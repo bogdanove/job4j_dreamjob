@@ -42,8 +42,8 @@ class UserDBStoreTest {
     public void whenCreateUser() {
         User user = new User(2, "2@mail.ru", "test");
         store.add(user);
-        User userInDb = store.findById(user.getId());
-        assertThat(userInDb.getEmail()).isEqualTo(user.getEmail());
+        Optional<User> userInDb = store.findById(user.getId());
+        assertThat(userInDb.get().getEmail()).isEqualTo(user.getEmail());
     }
 
     @Test
@@ -52,8 +52,8 @@ class UserDBStoreTest {
         store.add(user);
         user.setEmail("0@mail.ru");
         store.update(user);
-        User userInDb = store.findById(user.getId());
-        assertThat(userInDb.getEmail()).isEqualTo(user.getEmail());
+        Optional<User> userInDb = store.findById(user.getId());
+        assertThat(userInDb.get().getEmail()).isEqualTo(user.getEmail());
     }
 
     @Test

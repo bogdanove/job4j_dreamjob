@@ -64,11 +64,11 @@ public class UserDBStore {
                     user.setId(id.getInt(1));
                 }
             }
+            return Optional.of(user);
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-            return Optional.empty();
         }
-        return Optional.of(user);
+        return Optional.empty();
     }
 
     public void update(User user) {
@@ -84,20 +84,20 @@ public class UserDBStore {
         }
     }
 
-    public User findById(int id) {
+    public Optional<User> findById(int id) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(FIND_BY_ID)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return userFactory(it);
+                    return Optional.of(userFactory(it));
                 }
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
-        return null;
+        return Optional.empty();
     }
 
     private User userFactory(ResultSet it) throws SQLException {
