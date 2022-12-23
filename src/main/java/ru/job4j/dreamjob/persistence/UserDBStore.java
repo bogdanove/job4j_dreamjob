@@ -4,8 +4,6 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import ru.job4j.dreamjob.model.City;
-import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.model.User;
 
 import java.sql.Connection;
@@ -20,7 +18,7 @@ import java.util.Optional;
 public class UserDBStore {
 
     private final static String FIND_ALL = "SELECT * FROM users";
-    private final static String ADD = "INSERT INTO users(email, password) VALUES (?, ?)";
+    private final static String ADD = "INSERT INTO users(name, email, password) VALUES (?, ?, ?)";
     private final static String UPDATE = "UPDATE users set email = ?, password = ? where id = ?";
     private final static String FIND_BY_ID = "SELECT * FROM users WHERE id = ?";
     private final static String CLEAN = "TRUNCATE TABLE users RESTART IDENTITY";
@@ -57,8 +55,9 @@ public class UserDBStore {
              PreparedStatement ps = cn.prepareStatement(ADD,
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getPassword());
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -103,6 +102,7 @@ public class UserDBStore {
 
     private User userFactory(ResultSet it) throws SQLException {
         return new User(it.getInt("id"),
+                it.getString("name"),
                 it.getString("email"),
                 it.getString("password"));
     }

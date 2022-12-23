@@ -47,10 +47,12 @@
             <div class="card-body">
                 <form th:action="@{/registration}" method="POST">
                     <div class="form-group">
-                        <label for="name">Email</label>
-                        <input type="text" class="form-control" name="email" id="name">
-                        <label for="description">Пароль</label>
-                        <input type="password" class="form-control" name="password" id="description">
+                        <label for="name">Имя</label>
+                        <input type="text" class="form-control" name="name" id="name">
+                        <label for="email">Email</label>
+                        <input type="text" class="form-control" name="email" id="email">
+                        <label for="password">Пароль</label>
+                        <input type="password" class="form-control" name="password" id="password">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>

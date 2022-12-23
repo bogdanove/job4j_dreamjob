@@ -29,8 +29,8 @@ class UserDBStoreTest {
 
     @Test
     public void whenFindAllUsers() {
-        User user = new User(0, "1@mail.ru", "test");
-        User user1 = new User(1, "2@mail.ru", "test");
+        User user = new User(0, "Igor", "1@mail.ru", "test");
+        User user1 = new User(1, "Igor", "2@mail.ru", "test");
         List<User> users = Arrays.asList(user, user1);
         store.add(user);
         store.add(user1);
@@ -40,7 +40,7 @@ class UserDBStoreTest {
 
     @Test
     public void whenCreateUser() {
-        User user = new User(2, "2@mail.ru", "test");
+        User user = new User(2, "Igor", "2@mail.ru", "test");
         store.add(user);
         Optional<User> userInDb = store.findById(user.getId());
         assertThat(userInDb.get().getEmail()).isEqualTo(user.getEmail());
@@ -48,7 +48,7 @@ class UserDBStoreTest {
 
     @Test
     public void whenUpdateUser() {
-        User user = new User(3, "3@mail.ru", "test");
+        User user = new User(3, "Igor", "3@mail.ru", "test");
         store.add(user);
         user.setEmail("0@mail.ru");
         store.update(user);
@@ -58,8 +58,8 @@ class UserDBStoreTest {
 
     @Test
     public void whenCreateUserAndUserAlreadySaved() {
-        User user = new User(3, "2@mail.ru", "test");
-        User user1 = new User(4, "2@mail.ru", "test");
+        User user = new User(3, "Igor", "2@mail.ru", "test");
+        User user1 = new User(4, "Igor", "2@mail.ru", "test");
         store.add(user);
         Optional<User> userInDb = store.add(user1);
         assertThat(userInDb).isEmpty();
@@ -67,7 +67,7 @@ class UserDBStoreTest {
 
     @Test
     public void whenFindUserByUsernameAndPassword() {
-        User user = new User(3, "2@mail.ru", "test");
+        User user = new User(3, "Igor", "2@mail.ru", "test");
         store.add(user);
         Optional<User> userInDb = store.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
         assertThat(userInDb.get()).isEqualTo(user);
@@ -75,7 +75,7 @@ class UserDBStoreTest {
 
     @Test
     public void whenInputIncorrectPassword() {
-        User user = new User(3, "2@mail.ru", "test");
+        User user = new User(3, "Igor", "2@mail.ru", "test");
         store.add(user);
         Optional<User> userInDb = store.findUserByEmailAndPassword(user.getEmail(), "tost");
         assertThat(userInDb.isEmpty()).isTrue();
@@ -83,7 +83,7 @@ class UserDBStoreTest {
 
     @Test
     public void whenInputIncorrectEmail() {
-        User user = new User(3, "2@mail.ru", "test");
+        User user = new User(3, "Igor", "2@mail.ru", "test");
         store.add(user);
         Optional<User> userInDb = store.findUserByEmailAndPassword("3@mail.ru", user.getPassword());
         assertThat(userInDb.isEmpty()).isTrue();
