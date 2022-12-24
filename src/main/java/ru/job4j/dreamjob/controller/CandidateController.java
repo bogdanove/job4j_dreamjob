@@ -11,9 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.dreamjob.model.Candidate;
-import ru.job4j.dreamjob.model.User;
 import ru.job4j.dreamjob.service.CandidateService;
 import ru.job4j.dreamjob.service.CityService;
+import ru.job4j.dreamjob.utils.UserSessionUtil;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -34,12 +34,7 @@ public class CandidateController {
     public String candidates(Model model, HttpSession session) {
         model.addAttribute("candidates", candidateService.findAll());
         model.addAttribute("cities", cityService.getAllCities());
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        UserSessionUtil.addUserToModel(model, session);
         return "candidates";
     }
 
@@ -47,12 +42,7 @@ public class CandidateController {
     public String addCandidate(Model model, HttpSession session) {
         model.addAttribute("cities", cityService.getAllCities());
         model.addAttribute("cities", cityService.getAllCities());
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        UserSessionUtil.addUserToModel(model, session);
         return "addCandidate";
     }
 
@@ -70,12 +60,7 @@ public class CandidateController {
         model.addAttribute("candidate", candidateService.findById(id));
         model.addAttribute("cities", cityService.getAllCities());
         model.addAttribute("cities", cityService.getAllCities());
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        UserSessionUtil.addUserToModel(model, session);
         return "updateCandidate";
     }
 
