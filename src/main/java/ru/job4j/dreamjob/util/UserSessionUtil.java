@@ -1,11 +1,14 @@
-package ru.job4j.dreamjob.utils;
+package ru.job4j.dreamjob.util;
 
 import org.springframework.ui.Model;
 import ru.job4j.dreamjob.model.User;
 
 import javax.servlet.http.HttpSession;
 
-public class UserSessionUtil {
+public final class UserSessionUtil {
+
+    private UserSessionUtil() {
+    }
 
     public static void addUserToModel(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
