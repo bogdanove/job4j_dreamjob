@@ -1,6 +1,7 @@
 package ru.job4j.dreamjob.filter;
 
 import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +18,10 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String uri = req.getRequestURI();
-        if (uri.endsWith("loginPage") || uri.endsWith("login") || uri.endsWith("index")) {
+        if (uri.endsWith("loginPage") || uri.endsWith("login") || uri.endsWith("index")
+                || uri.endsWith("formAddUser") || uri.endsWith("registration")
+                || uri.endsWith("fail") || uri.endsWith("success")
+        ) {
             chain.doFilter(req, res);
             return;
         }
