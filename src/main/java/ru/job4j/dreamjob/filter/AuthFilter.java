@@ -33,13 +33,6 @@ public class AuthFilter implements Filter {
     }
 
     private boolean permit(String uri) {
-        boolean result = false;
-        for (String match : PERMITS) {
-            if (uri.endsWith(match)) {
-                result = true;
-                break;
-            }
-        }
-        return result;
+        return PERMITS.stream().anyMatch(uri::endsWith);
     }
 }
