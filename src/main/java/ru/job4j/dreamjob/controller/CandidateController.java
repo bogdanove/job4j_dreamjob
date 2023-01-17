@@ -47,8 +47,8 @@ public class CandidateController {
     }
 
     @PostMapping("/createCandidate")
-    public String createPost(@ModelAttribute Candidate candidate,
-                             @RequestParam("file") MultipartFile file) throws IOException {
+    public String createCandidate(@ModelAttribute Candidate candidate,
+                                  @RequestParam("file") MultipartFile file) throws IOException {
         candidate.setPhoto(file.getBytes());
         candidate.setCity(cityService.findById(candidate.getCity().getId()));
         candidateService.add(candidate);
@@ -56,7 +56,7 @@ public class CandidateController {
     }
 
     @GetMapping("/formUpdateCandidate/{candidateId}")
-    public String formUpdatePost(Model model, @PathVariable("candidateId") int id, HttpSession session) {
+    public String formUpdateCandidate(Model model, @PathVariable("candidateId") int id, HttpSession session) {
         model.addAttribute("candidate", candidateService.findById(id));
         model.addAttribute("cities", cityService.getAllCities());
         model.addAttribute("cities", cityService.getAllCities());
@@ -65,8 +65,8 @@ public class CandidateController {
     }
 
     @PostMapping("/updateCandidate")
-    public String updatePost(@ModelAttribute Candidate candidate,
-                             @RequestParam("file") MultipartFile file) throws IOException {
+    public String updateCandidate(@ModelAttribute Candidate candidate,
+                                  @RequestParam("file") MultipartFile file) throws IOException {
         candidate.setPhoto(file.getBytes());
         candidate.setCity(cityService.findById(candidate.getCity().getId()));
         candidateService.update(candidate);
